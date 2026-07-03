@@ -8,6 +8,14 @@ The UI requires the **backend services to be running** (see [Running the Pipelin
 
 ---
 
+## Accounts & data isolation
+
+On deployments with authentication enabled, you sign in through the TEXTaiLES single sign-on (SSO) page, backed by Directus. Every account gets its own isolated workspace: datasets and results you upload are never visible to another account, and nothing another account uploads is visible to you.
+
+Because workspaces are isolated per account, picking the same dataset name as someone else is safe — it will not collide with theirs.
+
+---
+
 ## 1. Start the UI
 
 From inside the `SAMplify_SuGaR_ui/nefele_ui` folder:
@@ -39,6 +47,8 @@ http://localhost:8092
 ```
 
 If you changed `WEB_PORT` in the `.env`, use that port instead.
+
+If the deployment has authentication enabled (`AUTH_ENABLED=1`), your first visit redirects to the TEXTaiLES SSO login page before you see the welcome screen below. After logging in you're sent back to the UI automatically.
 
 ![Welcome screen](../assets/ui_get_started.png)
 
@@ -125,3 +135,6 @@ Make sure `SAMPLIFY_ROOT` in the UI `.env` points to the correct `nefele-trainin
 
 **Mask quality is poor**  
 Add more points — especially background points around difficult edges (shadows, reflections).
+
+**Stuck in a login loop, or redirected somewhere unexpected**  
+Confirm `AUTH_ENABLED` is set the way you expect for this deployment — authentication is opt-in, and the redirect target (`APP_BASE`, the Directus URL) is fixed per deployment rather than read from `.env`. If you're accessing the UI at a different host/port than the deployment expects, the login redirect can loop. Check with whoever operates the deployment that the URL you're using matches what it was configured for.
